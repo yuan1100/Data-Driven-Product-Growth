@@ -31,20 +31,21 @@ Data-Driven-Product-Growth/
 │   ├── micro_funnel_bpse.sql      # B-P-S-E granular funnel & JSON parsing
 │   └── anomaly_detection.sql      # Automated secondary error rate calculations
 └── images/                        # Visual assets (SOPs, Mindmaps, UI comparisons)
+```
 
-#### 第二块：策略与折叠 SQL 代码
-*(接着在下面空一行，粘贴这一块)*
+---
 
-```markdown
 ## Strategy & Execution
 
 ### 1. Proactive Anomaly Detection Mechanism
-By quantifying raw event logs, we pinpointed interaction nodes that caused repeated user errors and high-frequency misoperations, providing clear, data-driven guidance for content R&D.
+I led a **2-person analytics team** to build a 0-to-1 **"Abnormal Product Content Screening Mechanism."** By quantifying raw event logs, we pinpointed interaction nodes that caused repeated user errors and high-frequency misoperations, providing clear, data-driven guidance for content R&D.
 
 ### 2. Cross-Department Standard Operating Procedure (SOP)
-This mechanism successfully established a standardized business closed-loop from problem identification to optimization implementation.
+I spearheaded the creation of the **"Abnormal Content Optimization Workflow V1.0"**. This mechanism successfully aligned 5 core roles—**Data Analytics, Courseware Product, User Data, Interaction Design, and Pedagogy**—establishing a standardized business closed-loop.
 
 ![SOP Workflow](images/SOP_workflow.png)
+
+*(Above: The SOP Synergy Mechanism spanning from requirement collection to optimization implementation.)*
 
 ---
 
@@ -58,9 +59,10 @@ I abandoned coarse-grained page funnels. Instead, by parsing unstructured raw da
 
 ```sql
 -- Purpose: Parse underlying JSON event tracking logs to build a 4-level user behavior trajectory tree.
+-- Highlight: Use get_json_object to precisely parse unstructured behavioral data.
 
 WITH 
--- 1. Limit to first-lesson users
+-- 1. Limit to first-lesson users (Exclude review data pollution)
 First_Lesson_Users AS (
     SELECT student_id, lesson_code
     FROM (
@@ -71,7 +73,7 @@ First_Lesson_Users AS (
           AND data_dt BETWEEN '2023-10-01' AND '2023-10-21' 
     ) a WHERE rn = 1
 ),
--- 2. Track entry points
+-- 2. Track entry points for core micro-interactions
 Enter_Interaction AS (
     SELECT uid, lesson_code,
            get_json_object(payload, '$.interaction_code') as interaction_code, 
@@ -79,27 +81,25 @@ Enter_Interaction AS (
     FROM app_log_db.fact_event_streams 
     WHERE data_dt BETWEEN '2023-10-01' AND '2023-10-21' 
       AND event = 'enter-interaction' AND role_type = 'student' 
+),
+-- 3. Track exit/completion points
+Leave_Interaction AS (
+    SELECT uid, lesson_code,
+           get_json_object(payload, '$.interaction_code') as interaction_code,
+           get_json_object(payload, '$.trace_id') as trace_id
+    FROM app_log_db.fact_event_streams 
+    WHERE data_dt BETWEEN '2023-10-01' AND '2023-10-21' 
+      AND event = 'leave-interaction' AND role_type = 'student' 
 )
--- (Query simplified for display, please refer to 01_SQL_Scripts for full logic)
-SELECT * FROM Enter_Interaction LIMIT 10;
-
-```markdown
----
-
-## Case Studies: Data-Driven Product Optimization
-
-Using the trajectory model, I located and optimized numerous interaction defects causing high-frequency misoperations. Below are 3 typical cases:
-
-| Task / Scene | Data Insight (Root Cause Drill-down) | Business Action (Optimization) |
-| :--- | :--- | :--- |
-| **1. Quantity Division**<br>*(Bones)* | **75.1% Error Rate:** Users only divided the bones physically but didn't type the numbers. | Added voice prompts and highlighted brackets; adjusted evaluation logic. |
-| **2. Find the Cylinder**<br>*(Bucket)* | **72.0% Error Rate:** The visual perspective design caused visual ambiguity. | Increased the visual difference between the top and bottom diameters. |
-| **3. Connecting Curves**<br>*(Wavy Lines)* | **38.9% Error Rate:** Users only selected one of the wavy lines and rushed to the next step. | Added a "total line segment count prompt" and a "Submit button". |
-
----
-
-## Strategic Evaluation Framework
-
-To ensure sustainable iteration, I systematically broke down the core metrics of **"promoting class completion rates and first-attempt accuracy rates,"** establishing a structured evaluation framework for the entire R&D center.
-
-![Project Mindmap](images/project_mindmap.png)
+-- 4. Aggregate conversion rates to locate defect nodes
+SELECT 
+    e.lesson_code,
+    e.interaction_code,
+    COUNT(DISTINCT f.student_id) AS total_class_users,
+    COUNT(DISTINCT e.uid) AS users_entering_interaction,
+    COUNT(DISTINCT l.uid) AS users_completing_interaction,
+    ROUND(COUNT(DISTINCT l.uid)/COUNT(DISTINCT e.uid), 4) AS interaction_completion_rate
+FROM First_Lesson_Users f
+LEFT JOIN Enter_Interaction e ON f.student_id = e.uid AND f.lesson_code = e.lesson_code
+LEFT JOIN Leave_Interaction l ON e.interaction_code = l.interaction_code AND e.trace_id = l.trace_id AND e.uid = l.uid
+GROUP BY e.lesson_code, e.interaction_code;
