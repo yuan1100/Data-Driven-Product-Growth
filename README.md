@@ -103,3 +103,15 @@ FROM First_Lesson_Users f
 LEFT JOIN Enter_Interaction e ON f.student_id = e.uid AND f.lesson_code = e.lesson_code
 LEFT JOIN Leave_Interaction l ON e.interaction_code = l.interaction_code AND e.trace_id = l.trace_id AND e.uid = l.uid
 GROUP BY e.lesson_code, e.interaction_code;
+
+---
+
+## Case Studies: Data-Driven Product Optimization
+
+Using the trajectory model, I located and optimized numerous interaction defects causing high-frequency misoperations. Below are 3 typical cases:
+
+| Task / Scene | Data Insight (Root Cause Drill-down) | Business Action (Cross-Functional Execution) |
+| :--- | :--- | :--- |
+| **1. Quantity Division (Bones)** | **75.1% Error Rate:** Users only divided the bones physically but didn't type the numbers, leading the system to mark it as incorrect. | **Collaborated with UX & R&D:** Added voice prompts and highlighted brackets; adjusted evaluation logic to accept physical division actions. |
+| **2. Find the Cylinder (Bucket)** | **72.0% Error Rate:** The visual perspective design made the 2D bucket appear to have cylindrical features, causing visual ambiguity. | **Aligned Art & Product Teams:** Increased the visual difference between the top and bottom diameters of the bucket graphic to eliminate ambiguity. |
+| **3. Connecting Curves (Wavy Lines)** | **38.9% Error Rate:** Users only selected one of the wavy lines and rushed to the next step, resulting in omission errors. | **Led UI Optimization:** Added a "total line segment count prompt" and a confirmation "Submit button" to prevent rushing. |
