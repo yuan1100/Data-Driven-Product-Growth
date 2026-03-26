@@ -103,6 +103,7 @@ FROM First_Lesson_Users f
 LEFT JOIN Enter_Interaction e ON f.student_id = e.uid AND f.lesson_code = e.lesson_code
 LEFT JOIN Leave_Interaction l ON e.interaction_code = l.interaction_code AND e.trace_id = l.trace_id AND e.uid = l.uid
 GROUP BY e.lesson_code, e.interaction_code;
+```
 
 ---
 
