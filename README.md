@@ -115,3 +115,22 @@ Using the trajectory model, I located and optimized numerous interaction defects
 | **1. Quantity Division (Bones)** | **75.1% Error Rate:** Users only divided the bones physically but didn't type the numbers, leading the system to mark it as incorrect. | **Collaborated with UX & R&D:** Added voice prompts and highlighted brackets; adjusted evaluation logic to accept physical division actions. |
 | **2. Find the Cylinder (Bucket)** | **72.0% Error Rate:** The visual perspective design made the 2D bucket appear to have cylindrical features, causing visual ambiguity. | **Aligned Art & Product Teams:** Increased the visual difference between the top and bottom diameters of the bucket graphic to eliminate ambiguity. |
 | **3. Connecting Curves (Wavy Lines)** | **38.9% Error Rate:** Users only selected one of the wavy lines and rushed to the next step, resulting in omission errors. | **Led UI Optimization:** Added a "total line segment count prompt" and a confirmation "Submit button" to prevent rushing. |
+
+## Cross-Department SOP & Visual Assets
+
+To ensure these optimizations transitioned from "one-off analyses" to a sustainable operational mechanism, I spearheaded the creation of the following systematic assets:
+
+### 1. Cross-Functional SOP: "Optimization Workflow V1.0"
+Clarified the end-to-end collaboration pipeline across 5 key roles (Data Analytics, User Data, Pedagogy, Interaction Design, and Courseware Product). This standardized the closed-loop process from requirement collection and data screening to high-frequency error profiling and final R&D implementation.
+
+![SOP Workflow](./images/SOP_workflow.png)
+
+### 2. Strategic Evaluation Framework: Project Mindmap
+Systematically broke down the core metrics of "Class Completion Rate" and "First-Attempt Accuracy," establishing a structured, data-driven evaluation framework for the pedagogy and product teams.
+
+![Project Mindmap](./images/project_mindmap.png)
+
+### 3. Data-Driven UX Redesign (Before & After)
+Visually demonstrates how granular behavioral data insights directly guided UI modifications to eliminate visual ambiguity and operational roadblocks.
+
+![UX Redesign Examples](./images/ux_bone_division.png)
