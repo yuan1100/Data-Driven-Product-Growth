@@ -11,7 +11,7 @@
 **Core Tech Stack:** Advanced SQL (Hive/Presto), JSON Parsing, Funnel Analytics, A/B Testing, Project Management, Team Leadership   
 
 ## 📌 Executive Summary & Business Value
-The core business objective of this project was to optimize product content, enhance user experience, and improve retention[cite: 5]. [cite_start]By leading a 2-person analytics team and shifting our operational model from reactive troubleshooting to proactive data-driven intervention, we successfully reduced user churn and drove measurable conversion growth in highly interactive online kids' classes.
+The core business objective of this project was to optimize product content, enhance user experience, and improve retention.  By leading a 2-person analytics team and shifting our operational model from reactive troubleshooting to proactive data-driven intervention, we successfully reduced user churn and drove measurable conversion growth in highly interactive online kids' classes.
 
 **Core Outcomes:**
 * **Leap in Product Experience & Retention:** Successfully optimized core interactive course content. A/B testing verified that the optimized courses achieved a **31% increase in user satisfaction** and an **18% lift in user retention** .
